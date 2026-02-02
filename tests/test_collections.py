@@ -711,3 +711,21 @@ def test_datetime_validation(app) -> None:
         },
     )
     assert invalid_response.status_code == 422
+
+
+def test_query_validation(app) -> None:
+    """Ensure query parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "query": json.dumps({"eo:cloud_cover": {"gte": 95}}),
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "query": "this is not a valid query string",
+        },
+    )
+    assert invalid_response.status_code == 422
