@@ -1,5 +1,6 @@
 """Test titiler.pgstac Mosaic endpoints."""
 
+import datetime
 import io
 import json
 from unittest.mock import patch
@@ -692,3 +693,21 @@ def test_collections_cql_filter(filter_expr, filter_lang, app):
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853000w361030"
+
+
+def test_datetime_validation(app) -> None:
+    """Ensure datetime parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "datetime": datetime.datetime.now(tz=datetime.UTC).isoformat(),
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "datetime": "this is not a valid datetime string",
+        },
+    )
+    assert invalid_response.status_code == 422
