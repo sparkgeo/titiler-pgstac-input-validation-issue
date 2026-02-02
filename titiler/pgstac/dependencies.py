@@ -17,6 +17,7 @@ from fastapi import HTTPException, Path, Query
 from psycopg import errors as pgErrors
 from psycopg.rows import class_row, dict_row
 from psycopg_pool import ConnectionPool
+from pydantic import BeforeValidator
 from starlette.requests import Request
 from typing_extensions import Annotated
 
@@ -25,6 +26,7 @@ from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
+from titiler.pgstac.validation import validate_datetime
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
@@ -225,6 +227,7 @@ def CollectionIdParams(
     ] = None,
     datetime: Annotated[
         str | None,
+        BeforeValidator(validate_datetime),
         Query(
             description="""Filters items that have a temporal property that intersects this value.\n
 Either a date-time or an interval, open or closed. Date and time expressions adhere to RFC 3339. Open intervals are expressed using double-dots.""",
