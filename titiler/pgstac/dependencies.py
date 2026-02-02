@@ -26,7 +26,7 @@ from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
-from titiler.pgstac.validation import validate_datetime
+from titiler.pgstac.validation import validate_datetime, validate_json_structure
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
@@ -245,6 +245,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
     # Extensions
     query: Annotated[
         str | None,
+        BeforeValidator(validate_json_structure),
         Query(
             description="Allows additional filtering based on the properties of Item objects",
             openapi_examples={
