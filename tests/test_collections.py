@@ -729,3 +729,60 @@ def test_query_validation(app) -> None:
         },
     )
     assert invalid_response.status_code == 422
+
+
+def test_filter_json_validation(app) -> None:
+    """Ensure JSON filter parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": json.dumps(
+                {
+                    "op": "lte",
+                    "args": [
+                        {
+                            "property": "gsd",
+                        },
+                        10,
+                    ],
+                }
+            ),
+            "filter-lang": "cql2-json",
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_content_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": json.dumps({"this": "is invalid content"}),
+        },
+    )
+    assert invalid_content_response.status_code == 422
+    invalid_json_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": "this is not a valid JSON string",
+            "filter-lang": "cql2-json",
+        },
+    )
+    assert invalid_json_response.status_code == 422
+
+
+def test_filter_text_validation(app) -> None:
+    """Ensure text filter parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": "id=irrelevant-value",
+            "filter-lang": "cql2-text",
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": "this is not a valid filter string",
+            "filter-lang": "cql2-text",
+        },
+    )
+    assert invalid_response.status_code == 422

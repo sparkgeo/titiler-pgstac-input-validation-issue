@@ -21,6 +21,8 @@ from titiler.core.resources.enums import MediaType
 # TODO: add "startsWith", "endsWith", "contains", "in"
 Operator = Literal["eq", "neq", "lt", "lte", "gt", "gte"]
 
+FilterLang = Literal["cql2-text", "cql2-json"]
+
 
 class Metadata(BaseModel):
     """Metadata Model."""

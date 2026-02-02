@@ -26,7 +26,7 @@ from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
-from titiler.pgstac.validation import validate_datetime, validate_json_structure
+from titiler.pgstac.validation import validate_datetime, validate_filter, validate_json
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
@@ -245,7 +245,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
     # Extensions
     query: Annotated[
         str | None,
-        BeforeValidator(validate_json_structure),
+        BeforeValidator(validate_json),
         Query(
             description="Allows additional filtering based on the properties of Item objects",
             openapi_examples={
@@ -289,6 +289,7 @@ Remember to URL encode the CQL2-JSON if using GET""",
     ] = "cql2-text",
 ) -> str:
     """Collection endpoints Parameters"""
+    validate_filter(filter_expr=filter_expr, filter_lang=filter_lang)
     return get_collection_id(
         request.app.state.dbpool,
         collection_id=collection_id,
