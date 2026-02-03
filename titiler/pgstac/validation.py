@@ -2,8 +2,8 @@
 Validation functions for caller-provided data.
 """
 
-import json
 import re
+from json import JSONDecodeError, loads
 
 from cql2 import Expr
 from pydantic import ValidationError
@@ -43,10 +43,11 @@ def validate_json(json_str: str | None) -> str | None:
     if json_str is None:
         return None
     try:
-        json.loads(json_str)
-    except Exception as e:
+        loads(json_str)
+    except JSONDecodeError as e:
         raise ValueError("invalid JSON content") from e
-    return json_str
+    else:
+        return json_str
 
 
 def validate_filter(filter_expr: str | None, filter_lang: FilterLang) -> None:

@@ -731,6 +731,17 @@ def test_query_validation(app) -> None:
     assert invalid_response.status_code == 422
 
 
+def test_query_json_content(app) -> None:
+    """Ensure valid JSON with invalid query content is validated correctly."""
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "query": json.dumps({"this": "is not a valid query"}),
+        },
+    )
+    assert invalid_response.status_code == 422
+
+
 def test_filter_json_validation(app) -> None:
     """Ensure JSON filter parameter validation works as expected."""
     valid_response = app.get(
