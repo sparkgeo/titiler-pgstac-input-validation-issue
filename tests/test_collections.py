@@ -797,3 +797,28 @@ def test_filter_text_validation(app) -> None:
         },
     )
     assert invalid_response.status_code == 422
+
+
+def test_bbox_validation(app) -> None:
+    """Ensure bbox parameter validation works as expected."""
+    valid_response_3d = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "-180,-90,-1,180,90,1",
+        },
+    )
+    assert valid_response_3d.status_code == 200
+    valid_response_2d = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "-180,-90,180,90",
+        },
+    )
+    assert valid_response_2d.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "invalid bbox string",
+        },
+    )
+    assert invalid_response.status_code == 422
