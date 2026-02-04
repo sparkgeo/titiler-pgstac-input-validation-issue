@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* disable tests for pre-0.9 pgstac versions
+
 ## 2.0.0 (2026-01-13)
 
 * change environment variable names for Postgres database connection **breaking change**

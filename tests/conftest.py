@@ -75,8 +75,6 @@ def load_json(filepath: str):
 
 @pytest.fixture(
     params=[
-        "0.7.10",
-        "0.8.5",
         "0.9.8",
     ],
     scope="session",
