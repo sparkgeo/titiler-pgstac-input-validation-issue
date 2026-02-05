@@ -59,6 +59,16 @@ uv sync --extra psycopg
 
 `titiler.pgstac` depends on `pgstac >=0.3.4` (https://github.com/stac-utils/pgstac/blob/main/CHANGELOG.md#v034).
 
+In theory, pgstac version `>=0.3.4` should be supported by titiler-pgstac but `old` version might fail or require old Postgres version (see https://github.com/stac-utils/titiler-pgstac/issues/252). 
+
+Here are the versions **officially** (tested) supported:
+
+| titiler-pgstac Version  |      pgstac |
+|                       --|           --|
+|                    <1.0 | >=0.7,<0.8  |
+|              >=1.0,<2.1 | >=0.8,<0.10 |
+|                   >=2.1 | >=0.9,<0.10 |
+
 ### `psycopg` requirement
 
 `titiler.pgstac` depends on the `psycopg` library. Because there are three ways of installing this package (`psycopg` or , `psycopg["c"]`, `psycopg["binary"]`), the user must install this separately from `titiler.pgstac`.
