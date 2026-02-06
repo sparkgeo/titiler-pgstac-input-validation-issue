@@ -822,3 +822,12 @@ def test_bbox_validation(app) -> None:
         },
     )
     assert invalid_response.status_code == 422
+
+
+def test_nul_byte_handling(app) -> None:
+    """Ensure nul bytes do not generate 500 errors"""
+    response = app.get("/collections/missing_collection%00id/tiles")
+    assert response.status_code == 404
+
+    response = app.get("/collections/missing_collection_id/tiles?param1=bad%00value")
+    assert response.status_code == 404
