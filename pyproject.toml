@@ -27,9 +27,9 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=1.1,<1.2",
-    "titiler.mosaic>=1.1,<1.2",
-    "titiler.extensions>=1.1,<1.2",
+    "titiler.core @ file:///Users/tom/source/sparkgeo/titiler-input-validation-issue/src/titiler/core",
+    "titiler.mosaic @ file:///Users/tom/source/sparkgeo/titiler-input-validation-issue/src/titiler/mosaic",
+    "titiler.extensions @ file:///Users/tom/source/sparkgeo/titiler-input-validation-issue/src/titiler/extensions",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",

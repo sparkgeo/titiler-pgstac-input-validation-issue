@@ -3246,8 +3246,7 @@ wheels = [
 
 [[package]]
 name = "titiler-core"
-version = "1.1.1"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../titiler-input-validation-issue/src/titiler/core" }
 dependencies = [
     { name = "fastapi" },
     { name = "geojson-pydantic" },
@@ -3261,33 +3260,81 @@ dependencies = [
     { name = "simplejson" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9b/68/c6ea6a4de4673934b74e7c9cd626917ecccca491e717730e286340b2482c/titiler_core-1.1.1.tar.gz", hash = "sha256:69568d86d1e1bffd211d3089fb6f006ae24653d84749f8f85b2319d4307d8358", size = 68572, upload-time = "2026-01-22T15:53:18.391Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/8e/e284715e92608cfe4f858880418759550fae4fc37559bc865de1f4f41d31/titiler_core-1.1.1-py3-none-any.whl", hash = "sha256:638897f0f54bf3f1e4151f551aeccd2eea8baf8b7728ccbef57ee24d677167fa", size = 86775, upload-time = "2026-01-22T15:53:19.404Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.108.0" },
+    { name = "geojson-pydantic", specifier = ">=1.1.2,<3.0" },
+    { name = "jinja2", specifier = ">=2.11.2,<4.0.0" },
+    { name = "morecantile" },
+    { name = "numpy" },
+    { name = "opentelemetry-api", marker = "extra == 'telemetry'" },
+    { name = "opentelemetry-exporter-otlp", marker = "extra == 'telemetry'" },
+    { name = "opentelemetry-instrumentation-fastapi", marker = "extra == 'telemetry'" },
+    { name = "opentelemetry-instrumentation-logging", marker = "extra == 'telemetry'" },
+    { name = "opentelemetry-sdk", marker = "extra == 'telemetry'" },
+    { name = "pydantic", specifier = "~=2.0" },
+    { name = "rasterio" },
+    { name = "rio-tiler", specifier = ">=8.0,<9.0" },
+    { name = "simplejson" },
+    { name = "typing-extensions", specifier = ">=4.6.1" },
+]
+provides-extras = ["telemetry"]
+
+[package.metadata.requires-dev]
+test = [
+    { name = "httpx" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
 ]
 
 [[package]]
 name = "titiler-extensions"
-version = "1.1.1"
-source = { registry = "https://pypi.org/simple" }
+source = { directory = "../titiler-input-validation-issue/src/titiler/extensions" }
 dependencies = [
     { name = "titiler-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/aa/f0/3435d1aafa3f730fe19cce6022aa997f3f2c9a67d98274fc890645a49a6d/titiler_extensions-1.1.1.tar.gz", hash = "sha256:7963cfdbd3bd94a2a8934e3208091fbaef6fcb45dde796ddcd3823085cc4b22f", size = 31270, upload-time = "2026-01-22T15:53:29.628Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7f/31/2c44d0726ddfb1f0ad56ae5a80bd73f2d911190d2de06ba245a1e14bbef2/titiler_extensions-1.1.1-py3-none-any.whl", hash = "sha256:10d5a7ec7dd1efde49ef51103bb03a8e211a31a35bb6335688a2a960f5ed4732", size = 38011, upload-time = "2026-01-22T15:53:28.267Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "rio-cogeo", marker = "extra == 'cogeo'", specifier = ">=7.0,<8.0" },
+    { name = "rio-stac", marker = "extra == 'stac'", specifier = ">=0.12,<0.13" },
+    { name = "titiler-core", editable = "../titiler-input-validation-issue/src/titiler/core" },
+]
+provides-extras = ["cogeo", "stac"]
+
+[package.metadata.requires-dev]
+test = [
+    { name = "httpx" },
+    { name = "owslib" },
+    { name = "pystac", extras = ["validation"], specifier = ">=1.0.0,<2.0.0" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
 ]
 
 [[package]]
 name = "titiler-mosaic"
-version = "1.1.1"
-source = { registry = "https://pypi.org/simple" }
+source = { directory = "../titiler-input-validation-issue/src/titiler/mosaic" }
 dependencies = [
     { name = "titiler-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9a/ff/526c70f3214dc4112d4abe1edbf62e52f75385a851821fb79abc73a35b4b/titiler_mosaic-1.1.1.tar.gz", hash = "sha256:d7d9f5f1be8c22ad51b8bd063e3d11d2289d058e4ae6856bcf8f13760d815b1c", size = 14761, upload-time = "2026-01-22T15:53:23.836Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a3/5f/f56fb8d9d437f39c0fd7b6aa89c355054992269adfa263acdaeae40f444d/titiler_mosaic-1.1.1-py3-none-any.whl", hash = "sha256:e78c2e346fd5badd8fd4104c1219068b9e83961ba223aa1a767c66b2b6c0b47b", size = 17492, upload-time = "2026-01-22T15:53:22.991Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "cogeo-mosaic", marker = "extra == 'mosaicjson'", specifier = ">=9.0,<10.0" },
+    { name = "titiler-core", editable = "../titiler-input-validation-issue/src/titiler/core" },
+]
+provides-extras = ["mosaicjson"]
+
+[package.metadata.requires-dev]
+test = [
+    { name = "httpx" },
+    { name = "owslib" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
 ]
 
 [[package]]
@@ -3359,9 +3406,9 @@ requires-dist = [
     { name = "psycopg", extras = ["pool"], marker = "extra == 'psycopg'" },
     { name = "pydantic", specifier = ">=2.4,<3.0" },
     { name = "pydantic-settings", specifier = "~=2.0" },
-    { name = "titiler-core", specifier = ">=1.1,<1.2" },
-    { name = "titiler-extensions", specifier = ">=1.1,<1.2" },
-    { name = "titiler-mosaic", specifier = ">=1.1,<1.2" },
+    { name = "titiler-core", directory = "../titiler-input-validation-issue/src/titiler/core" },
+    { name = "titiler-extensions", directory = "../titiler-input-validation-issue/src/titiler/extensions" },
+    { name = "titiler-mosaic", directory = "../titiler-input-validation-issue/src/titiler/mosaic" },
 ]
 provides-extras = ["psycopg", "psycopg-binary", "psycopg-c", "telemetry"]
 
