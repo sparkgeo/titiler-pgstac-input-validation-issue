@@ -33,10 +33,16 @@ class StripNulMiddleware:
             await self.app(scope, receive, send)
             return
 
-        scope["path"] = re.sub(_nul, "", scope["path"])
+        scope["path"] = re.sub(
+            _nul, "", scope["path"]
+        )  # nul in path is URL-unescaped at this point
         for property in ["query_string", "raw_path"]:
             scope[property] = re.sub(
-                quote(_nul), "", cast(bytes, scope[property]).decode(_encoding)
+                quote(_nul),
+                "",
+                cast(bytes, scope[property]).decode(
+                    _encoding
+                ),  # nul in these properties is URL-escaped
             ).encode(_encoding)
 
         await self.app(scope, receive, send)
