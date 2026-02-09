@@ -11,27 +11,6 @@ from pydantic import ValidationError
 from titiler.core.validation import validate_json
 
 
-def validate_datetime(datetime_value: str) -> str:
-    """
-    Verify that a datetime string matches one accepted regex pattern.
-    :param datetime_value: Caller-provided datetime value.
-    :type datetime_value: str
-    :return: Caller-provided datetime value if validated, otherwise an exception is raised.
-    :rtype: str
-    """
-    single_datetime_regex = (
-        r"((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)"
-    )
-    if (
-        re.match(f"^{single_datetime_regex}$", datetime_value)
-        or re.match(rf"^\.\./{single_datetime_regex}$", datetime_value)
-        or re.match(rf"^{single_datetime_regex}/\.\.$", datetime_value)
-        or re.match(f"{single_datetime_regex}/{single_datetime_regex}", datetime_value)
-    ):
-        return datetime_value
-    raise ValueError("invalid datetime format")
-
-
 def validate_filter(
     filter_expr: str | None, filter_lang: Literal["cql2-text", "cql2-json"]
 ) -> None:

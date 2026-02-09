@@ -3188,6 +3188,20 @@ wheels = [
 ]
 
 [[package]]
+name = "stac-pydantic"
+version = "3.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "geojson-pydantic" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9a/75/f1bb73ba95d3353b98894669f17c0c2d6b8d8f21638528305793fd54de07/stac_pydantic-3.5.0.tar.gz", hash = "sha256:0d70f4e9d0754842a0bfd04c06e41a41af04f313de94b6dfe06c98b6c5eea4fc", size = 16265, upload-time = "2026-01-29T15:13:04.17Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/34/80057aa37d0899866a98179689e83cb319b3950c559d68090c6d6b8060d0/stac_pydantic-3.5.0-py3-none-any.whl", hash = "sha256:42f326cf397d76a70daeadfe30e1e8a272524c515c14e216f7209f46582846d6", size = 25596, upload-time = "2026-01-29T15:13:03.278Z" },
+]
+
+[[package]]
 name = "stack-data"
 version = "0.6.3"
 source = { registry = "https://pypi.org/simple" }
@@ -3297,6 +3311,7 @@ dependencies = [
     { name = "cql2" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "stac-pydantic" },
     { name = "titiler-core" },
     { name = "titiler-extensions" },
     { name = "titiler-mosaic" },
@@ -3359,6 +3374,7 @@ requires-dist = [
     { name = "psycopg", extras = ["pool"], marker = "extra == 'psycopg'" },
     { name = "pydantic", specifier = ">=2.4,<3.0" },
     { name = "pydantic-settings", specifier = "~=2.0" },
+    { name = "stac-pydantic", specifier = ">=3.5.0,<4" },
     { name = "titiler-core", specifier = ">=1.2,<1.3" },
     { name = "titiler-extensions", specifier = ">=1.2,<1.3" },
     { name = "titiler-mosaic", specifier = ">=1.2,<1.3" },

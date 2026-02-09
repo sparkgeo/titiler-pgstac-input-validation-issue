@@ -18,6 +18,7 @@ from psycopg import errors as pgErrors
 from psycopg.rows import class_row, dict_row
 from psycopg_pool import ConnectionPool
 from pydantic import BeforeValidator
+from stac_pydantic.shared import validate_datetime
 from starlette.requests import Request
 from typing_extensions import Annotated
 
@@ -27,7 +28,7 @@ from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
-from titiler.pgstac.validation import validate_bbox, validate_datetime, validate_filter
+from titiler.pgstac.validation import validate_bbox, validate_filter
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
