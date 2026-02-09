@@ -3,12 +3,12 @@ Validation functions for caller-provided data.
 """
 
 import re
+from typing import Literal
 
 from cql2 import Expr
 from pydantic import ValidationError
 
 from titiler.core.validation import validate_json
-from titiler.pgstac.model import FilterLang
 
 
 def validate_datetime(datetime_value: str) -> str:
@@ -32,7 +32,9 @@ def validate_datetime(datetime_value: str) -> str:
     raise ValueError("invalid datetime format")
 
 
-def validate_filter(filter_expr: str | None, filter_lang: FilterLang) -> None:
+def validate_filter(
+    filter_expr: str | None, filter_lang: Literal["cql2-text", "cql2-json"]
+) -> None:
     """
     Verify that a filter string can be parsed, parsing is determined by the language used.
     :param filter_expr: Caller-provided filter value.
