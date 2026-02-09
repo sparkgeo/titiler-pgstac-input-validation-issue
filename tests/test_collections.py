@@ -808,6 +808,7 @@ def test_bbox_validation(app) -> None:
         },
     )
     assert valid_response_3d.status_code == 200
+
     valid_response_2d = app.get(
         f"/collections/{collection_id}/tiles",
         params={
@@ -815,10 +816,24 @@ def test_bbox_validation(app) -> None:
         },
     )
     assert valid_response_2d.status_code == 200
-    invalid_response = app.get(
+
+    invalid_format_1_response = app.get(
         f"/collections/{collection_id}/tiles",
         params={
             "bbox": "invalid bbox string",
         },
     )
-    assert invalid_response.status_code == 422
+    assert invalid_format_1_response.status_code == 422
+
+    invalid_format_2_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "-180,-90,180",
+        },
+    )
+    assert invalid_format_2_response.status_code == 422
+
+    invalid_values_response = app.get(
+        f"/collections/{collection_id}/tiles", params={"bbox": "180,-90,-180,90"}
+    )
+    assert invalid_values_response.status_code == 422

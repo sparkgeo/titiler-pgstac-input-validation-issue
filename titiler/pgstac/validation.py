@@ -2,10 +2,10 @@
 Validation functions for caller-provided data.
 """
 
-import re
-from typing import Literal
+from typing import Literal, cast
 
 from cql2 import Expr
+from geojson_pydantic.types import BBox
 from pydantic import ValidationError
 
 from titiler.core.validation import validate_json
@@ -35,22 +35,48 @@ def validate_filter(
             raise ValidationError(str(e), []) from e
 
 
-def validate_bbox(bbox_str: str | None) -> str | None:
-    """
-    Verify that a BBOX string can be parsed.
-    :param bbox_str: Caller-provided bbox value.
-    :type bbox_str: str | None
-    :return: Caller-provided bbox value if validated, otherwise an exception is raised.
-    :rtype: str
+def validate_bbox(v: BBox):
+    """Validate BBOX values."""
+    if v:
+        # Validate order
+        if len(v) == 4:
+            xmin, ymin, xmax, ymax = v
+        elif len(v) == 6:
+            xmin, ymin, min_elev, xmax, ymax, max_elev = v
+            if max_elev < min_elev:
+                raise ValueError(
+                    "Maximum elevation must greater than minimum elevation"
+                )
+        else:
+            raise ValueError("Bounding box must have 4 or 6 numbers")
 
-    """
-    if bbox_str is None:
+        if xmax < xmin:
+            raise ValueError("Maximum longitude must be greater than minimum longitude")
+
+        if ymax < ymin:
+            raise ValueError("Maximum longitude must be greater than minimum longitude")
+
+        # Validate against WGS84
+        if xmin < -180 or ymin < -90 or xmax > 180 or ymax > 90:
+            raise ValueError("Bounding box must be within (-180, -90, 180, 90)")
+
+    return v
+
+
+def parse_and_validate_bbox(value: str | BBox | None):
+    """Validate BBOX format and values."""
+    if value is None:
         return None
-    parseable_float_regex = r"\s*(-)?\d+((\.\d+)(e\d+)?)?\s*"  # can simply call titiler.core.validation.validate_bbox on titiler.core > 1.1.1 when released
-    if re.match(
-        "^{}$".format(",".join([parseable_float_regex for _ in range(4)])), bbox_str
-    ) or re.match(
-        "^{}$".format(",".join([parseable_float_regex for _ in range(6)])), bbox_str
-    ):
-        return bbox_str
-    raise ValueError("invalid bbox content")
+    parsed_value: BBox
+    if isinstance(value, str):
+        try:
+            parsed_value = cast(BBox, [float(x) for x in value.split(",")])
+        except ValueError as e:
+            raise ValueError(
+                "Bounding box must be a comma-separated list of numbers"
+            ) from e
+    else:
+        parsed_value = value
+
+    validate_bbox(parsed_value)
+    return value

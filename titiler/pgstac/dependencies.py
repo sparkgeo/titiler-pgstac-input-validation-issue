@@ -28,7 +28,7 @@ from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
-from titiler.pgstac.validation import validate_bbox, validate_filter
+from titiler.pgstac.validation import parse_and_validate_bbox, validate_filter
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
@@ -219,7 +219,7 @@ def CollectionIdParams(
     ] = None,
     bbox: Annotated[
         str | None,
-        BeforeValidator(validate_bbox),
+        BeforeValidator(parse_and_validate_bbox),
         Query(
             description="Filters items intersecting this bounding box",
             openapi_examples={
