@@ -22,16 +22,12 @@ from starlette.requests import Request
 from typing_extensions import Annotated
 
 from titiler.core.dependencies import DefaultDependency
+from titiler.core.validation import validate_json
 from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
-from titiler.pgstac.validation import (
-    validate_bbox,
-    validate_datetime,
-    validate_filter,
-    validate_json,
-)
+from titiler.pgstac.validation import validate_bbox, validate_datetime, validate_filter
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()

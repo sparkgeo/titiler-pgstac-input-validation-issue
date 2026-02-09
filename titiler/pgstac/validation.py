@@ -3,11 +3,11 @@ Validation functions for caller-provided data.
 """
 
 import re
-from json import JSONDecodeError, loads
 
 from cql2 import Expr
 from pydantic import ValidationError
 
+from titiler.core.validation import validate_json
 from titiler.pgstac.model import FilterLang
 
 
@@ -30,24 +30,6 @@ def validate_datetime(datetime_value: str) -> str:
     ):
         return datetime_value
     raise ValueError("invalid datetime format")
-
-
-def validate_json(json_str: str | None) -> str | None:
-    """
-    Verify that a JSON string can be parsed.
-    :param json_str: Caller-provided JSON value.
-    :type json_str: str | None
-    :return: Caller-provided JSON value if validated, otherwise an exception is raised.
-    :rtype: str
-    """
-    if json_str is None:
-        return None
-    try:
-        loads(json_str)
-    except JSONDecodeError as e:
-        raise ValueError("invalid JSON content") from e
-    else:
-        return json_str
 
 
 def validate_filter(filter_expr: str | None, filter_lang: FilterLang) -> None:
