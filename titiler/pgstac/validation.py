@@ -63,20 +63,16 @@ def validate_bbox(v: BBox):
     return v
 
 
-def parse_and_validate_bbox(value: str | BBox | None):
+def parse_and_validate_bbox(value: str | None):
     """Validate BBOX format and values."""
     if value is None:
         return None
-    parsed_value: BBox
-    if isinstance(value, str):
-        try:
-            parsed_value = cast(BBox, [float(x) for x in value.split(",")])
-        except ValueError as e:
-            raise ValueError(
-                "Bounding box must be a comma-separated list of numbers"
-            ) from e
-    else:
-        parsed_value = value
+    try:
+        parsed_value = cast(BBox, [float(x) for x in value.split(",")])
+    except ValueError as e:
+        raise ValueError(
+            "Bounding box must be a comma-separated list of numbers"
+        ) from e
 
     validate_bbox(parsed_value)
     return value
