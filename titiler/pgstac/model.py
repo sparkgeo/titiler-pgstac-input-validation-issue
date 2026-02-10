@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field, ValidationInfo, field_validator, model_va
 from typing_extensions import Annotated
 
 from titiler.core.resources.enums import MediaType
+from titiler.pgstac.validation import validate_bbox as validate_bbox_common
 
 # ref: https://github.com/stac-api-extensions/query
 # TODO: add "startsWith", "endsWith", "contains", "in"
@@ -202,6 +203,11 @@ class PgSTACSearch(BaseModel, extra="allow"):
             raise ValueError("intersects and bbox parameters are mutually exclusive")
 
         return v
+
+    @field_validator("bbox")
+    def validate_bbox(cls, value: BBox | None):
+        """Validate BBOX."""
+        return validate_bbox_common(value)
 
 
 class RegisterMosaic(PgSTACSearch):

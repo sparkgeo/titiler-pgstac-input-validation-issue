@@ -35,7 +35,7 @@ def validate_filter(
             raise ValidationError(str(e), []) from e
 
 
-def validate_bbox(v: BBox):
+def validate_bbox(v: BBox | None):
     """Validate BBOX values."""
     if v:
         # Validate order
